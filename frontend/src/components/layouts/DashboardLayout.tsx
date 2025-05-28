@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { 
   Upload, 
@@ -11,7 +11,8 @@ import {
   Bell, 
   Search, 
   Settings,
-  ChevronDown
+  ChevronDown,
+  FileText // Add FileText icon
 } from 'lucide-react';
 import { getProfile } from '../../lib/api';
 
@@ -42,6 +43,7 @@ export default function DashboardLayout() {
 
   const navigation = [
     { name: 'Upload', to: '/dashboard/upload', icon: Upload },
+    { name: 'Transcription', to: '/dashboard/transcription', icon: FileText }, // Add Transcription item
     { name: 'Quiz', to: '/dashboard/quiz', icon: BookOpen },
     { name: 'Review', to: '/dashboard/review', icon: CheckCircle },
   ];
@@ -91,14 +93,15 @@ export default function DashboardLayout() {
       } lg:translate-x-0`}>
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center h-16 px-6 bg-gradient-to-r from-purple-600 to-purple-700">
+          <div className="flex items-center h-16 px-6 bg-gradient-to-r">
             <h1 className="text-xl font-bold text-white flex items-center space-x-2">
-              <span className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-                WT
+              <span className="w-10h-10bg-white/20 rounded-lg flex items-center justify-center">
+                <img src="/logo.png" alt="Shiksha.ai Logo" className="h-8" />  
               </span>
-              <span>Whisper Task</span>
+              <span className='text-black cursor-pointer' onClick={()=>navigate('/dashbaord')}>Shiksha.ai</span>
             </h1>
           </div>
+
 
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
@@ -149,18 +152,18 @@ export default function DashboardLayout() {
 
             {/* Right section */}
             <div className="flex items-center space-x-4">
-              <button className="p-2 text-gray-400 hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors">
+              <button className="p-2 text-black hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors bg-transparent">
                 <Bell size={20} />
               </button>
-              <button className="p-2 text-gray-400 hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors">
+              <button className="p-2 text-black hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors bg-transparent">
                 <Settings size={20} />
               </button>
               <div className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center space-x-3 focus:outline-none"
+                  className="p-2 text-black hover:text-purple-600 rounded-lg hover:bg-purple-50 transition-colors bg-transparent flex items-center space-x-3"
                 >
-                  <div className="h-9 w-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-medium relative ring-2 ring-purple-600/20">
+                  <div className=" h-9 w-9 rounded-full bg-purple-600 text-white flex items-center justify-center font-medium relative ring-2 ring-purple-600/20">
                     {userData?.user?.fullname ? (
                       `${userData.user.fullname.firstname[0]}${userData.user.fullname.lastname[0]}`
                     ) : (
@@ -193,6 +196,7 @@ export default function DashboardLayout() {
                       </p>
                     </div>
                     <div className="py-1">
+                      <div className="grid grid-cols-1">
                       <Link
                         to="/dashboard/profile"
                         className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600"
@@ -201,15 +205,20 @@ export default function DashboardLayout() {
                         <User className="w-4 h-4 mr-3" />
                         Profile Settings
                       </Link>
-                      <button
-                        onClick={handleLogout}
-                        className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50"
-                      >
+                        <button
+                        onClick={() => {
+                          handleLogout();
+                          setIsProfileOpen(false);
+                        }}
+                        className="flex items-center px-4 py-2 text-sm text-gray-700 hover:text-purple-600 text-left"
+                        >
                         <LogOut className="w-4 h-4 mr-3" />
                         Logout
-                      </button>
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                    </div>
+                  
                 )}
               </div>
             </div>

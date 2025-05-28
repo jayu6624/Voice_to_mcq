@@ -9,6 +9,7 @@ const transcriptionRoutes = require("./routes/transcription.routes");
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
+const { startLlmService } = require('./llm/start_service');
 
 // Load env vars
 dotenv.config();
@@ -90,7 +91,25 @@ const connectDB = async () => {
 };
 
 // Connect to database
-connectDB();
+connectDB().then(() => {
+  // Start the LLM service after DB connection is established
+  let llmService = null;
+  
+  try {
+    llmService = startLlmService();
+    console.log('LLM service started');
+  } catch (error) {
+    console.error('Failed to start LLM service:', error);
+  }
+  
+  // Handle server shutdown
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down LLM service...');
+    if (llmService) {
+      llmService.kill();
+    }
+  });
+});
 
 // Listen on server instead of app
 server.listen(process.env.PORT || 5000, () => {

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { 
   HiUpload, HiQuestionMarkCircle, HiStar, 
-  HiUser, HiLogout, HiMenuAlt2 
+  HiUser, HiLogout, HiMenuAlt2, HiDocumentText
 } from 'react-icons/hi';
 
 interface SidebarProps {
@@ -14,6 +14,7 @@ export default function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
   
   const menuItems = [
     { icon: HiUpload, label: 'Upload Video', path: '/dashboard/upload' },
+    { icon: HiDocumentText, label: 'Transcription', path: '/dashboard/transcription' },
     { icon: HiQuestionMarkCircle, label: 'MCQ Quiz', path: '/dashboard/quiz' },
     { icon: HiStar, label: 'Review', path: '/dashboard/review' },
     { icon: HiUser, label: 'Profile', path: '/dashboard/profile' },

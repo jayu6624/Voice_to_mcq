@@ -223,3 +223,27 @@ footer {
     gap: 0.5rem;
   }
 }
+
+/* Add to your existing CSS */
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out forwards;
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+
+/* Add progress bar transition for smoother updates */
+.progress-bar-transition {
+  transition: width 0.5s ease-in-out;
+}
